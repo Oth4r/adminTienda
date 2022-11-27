@@ -8,13 +8,13 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: tienda-dev.20.72.99.142.nip.io
+  - host: adminTienda.20.72.99.142.nip.io
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service: 
-            name: tienda
+            name: adminTienda
             port:
               number: 80

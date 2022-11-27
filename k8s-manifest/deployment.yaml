@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: tienda
+  name: adminTienda
 spec:
   selector:
     matchLabels:
-      name: tienda
+      name: adminTienda
   template:
     metadata:
       labels:
-        name: tienda
+        name: adminTienda
     spec:
       containers:
-        - image: cbernabec/tienda-devops
-          name: tienda
+        - image: Oth4t/adminTienda
+          name: adminTienda
           imagePullPolicy: Always
           ports:
             - containerPort: 80

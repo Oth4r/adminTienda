@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: './back'
+        working-directory: './adminTienda'
     strategy:
       matrix:
         node-version: [14.x]
@@ -65,7 +65,7 @@ jobs:
         cache: 'npm'
     - name: Code analysis
       run: echo "Static code analysis"
-      working-directory: ./back
+      working-directory: ./adminTienda
       
   generate_artifact:
     name: Generate artifact
@@ -126,5 +126,5 @@ jobs:
              k8s-manifest/deployment.yaml
              k8s-manifest/ingress-dev.yaml
              k8s-manifest/service.yaml
-          images: 'rcronald/block-master:main'
+          images: 'Oth4r/block-master:main'
           pull: false

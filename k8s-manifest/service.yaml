@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: tienda
+  name: adminTienda
   labels:
-    name: tienda
+    name: adminTienda
 spec:
   ports:
   - port: 80
     name: http
   selector:
-    name: tienda
+    name: adminTienda
