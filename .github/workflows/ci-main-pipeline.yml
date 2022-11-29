@@ -5,15 +5,12 @@ name: CI Pipeline Merge
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
 
 jobs:
   code_build:
     name: Code build
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: './adminTienda'
     strategy:
       matrix:
         node-version: [14.x]
@@ -27,7 +24,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - name: Install dependencies
-      run: npm install
+      run: npm install --force
       
   unit_test:
     name: Unit testing
@@ -44,7 +41,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - name: Install dependencies
-      run: npm install
+      run: npm install --force
     - name: Execute unit testing
       run: echo "Test"
 
@@ -65,7 +62,6 @@ jobs:
         cache: 'npm'
     - name: Code analysis
       run: echo "Static code analysis"
-      working-directory: ./adminTienda
       
   generate_artifact:
     name: Generate artifact
@@ -76,7 +72,7 @@ jobs:
     - name: Checkout source code
       uses: actions/checkout@v3
     - name: Build application
-      run: npm install && npm run build --if-present
+      run: npm install --force && npm run build
     - name: Log in to Docker Hub
       uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
       with:
@@ -86,7 +82,7 @@ jobs:
       id: meta
       uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
       with:
-        images: clasesurp2/block-master
+        images: oth4r/admintienda
     - name: Build and push Docker image
       uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
       with:
@@ -121,10 +117,12 @@ jobs:
         id: deploy-aks
         uses: Azure/k8s-deploy@v4
         with:
-          namespace: 'development'
+          namespace: 'grados'
           manifests: |
              k8s-manifest/deployment.yaml
              k8s-manifest/ingress-dev.yaml
              k8s-manifest/service.yaml
-          images: 'Oth4r/block-master:main'
+          images: 'oth4r/admintienda:master'
           pull: false
+      - name: restart deployment
+        run: kubectl rollout restart deploy admintienda -n grados
